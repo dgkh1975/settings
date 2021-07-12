@@ -16,7 +16,7 @@ All top-level settings are optional. Some plugins do have required fields.
 # These settings are synced to GitHub by https://probot.github.io/apps/settings/
 
 repository:
-  # See https://developer.github.com/v3/repos/#edit for all available settings.
+  # See https://docs.github.com/en/rest/reference/repos#update-a-repository for all available settings.
 
   # The name of the repository. Changing this will rename the repository
   name: repo-name
@@ -61,6 +61,9 @@ repository:
   # rebase-merging.
   allow_rebase_merge: true
 
+  # Either `true` to enable automatic deletion of branches on merge, or `false` to disable
+  delete_branch_on_merge: true
+
   # Either `true` to enable automated security fixes, or `false` to disable
   # automated security fixes.
   enable_automated_security_fixes: true
@@ -80,9 +83,9 @@ labels:
     color: '#336699'
     description: New functionality.
 
-  - name: first-timers-only
-    # include the old name to rename an existing label
-    oldname: Help Wanted
+  - name: Help Wanted
+    # Provide a new name to rename an existing label
+    new_name: first-timers-only
 
 # Milestones: define milestones for Issues and Pull Requests
 milestones:
@@ -92,22 +95,22 @@ milestones:
     state: open
 
 # Collaborators: give specific users access to this repository.
-# See https://developer.github.com/v3/repos/collaborators/#add-user-as-a-collaborator for available options
+# See https://docs.github.com/en/rest/reference/repos#add-a-repository-collaborator for available options
 collaborators:
-  - username: bkeepers
-    # Note: Only valid on organization-owned repositories.
-    # The permission to grant the collaborator. Can be one of:
-    # * `pull` - can pull, but not push to or administer this repository.
-    # * `push` - can pull and push, but not administer this repository.
-    # * `admin` - can pull, push and administer this repository.
-    # * `maintain` - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
-    # * `triage` - Recommended for contributors who need to proactively manage issues and pull requests without write access.
-    permission: push
+  # - username: bkeepers
+  #   permission: push
+  # - username: hubot
+  #   permission: pull
 
-  - username: hubot
-    permission: pull
+  # Note: `permission` is only valid on organization-owned repositories.
+  # The permission to grant the collaborator. Can be one of:
+  # * `pull` - can pull, but not push to or administer this repository.
+  # * `push` - can pull and push, but not administer this repository.
+  # * `admin` - can pull, push and administer this repository.
+  # * `maintain` - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
+  # * `triage` - Recommended for contributors who need to proactively manage issues and pull requests without write access.
 
-# See https://developer.github.com/v3/teams/#add-or-update-team-repository for available options
+# See https://docs.github.com/en/rest/reference/teams#add-or-update-team-repository-permissions for available options
 teams:
   - name: core
     # The permission to grant the team. Can be one of:
@@ -122,7 +125,7 @@ teams:
 
 branches:
   - name: master
-    # https://developer.github.com/v3/repos/branches/#update-branch-protection
+    # https://docs.github.com/en/rest/reference/repos#update-branch-protection
     # Branch Protection settings. Set to null to disable
     protection:
       # Required. Require at least one approving review on a pull request, before merging. Set to null to disable.
@@ -161,7 +164,7 @@ branches:
 
 ### Inheritance
 
-This app uses [probot-config](https://github.com/probot/probot-config). This means you can inherit settings from another repo, and only override what you want to change.
+This app is built with [probot](https://github.com/probot/probot), and thus uses the [octokit-plugin-config](https://github.com/probot/octokit-plugin-config). This means you can inherit settings from another repo, and only override what you want to change.
 
 Individual settings in the arrays listed under `labels`, `teams` (once it is supported) and `branches` will be merged with the base repo if the `name` of an element in the array matches the `name` of an element in the corresponding array in the base repo. A possible future enhancement would be to make that work for the other settings arrays based on `username`, or `title`. This is not currently supported.
 

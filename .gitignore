@@ -4,3 +4,8 @@ node_modules/
 private-key.pem
 .env
 *.pem
+.vercel
+.idea
+!.idea/
+.idea/*
+!.idea/runConfigurations/
